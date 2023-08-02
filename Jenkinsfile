@@ -7,8 +7,18 @@ pipeline {
         stage('Print Branch Name') {
             steps {
                 script {
-                    def branchName = env.GIT_BRANCH ?: env.BRANCH_NAME
-                    branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                    def branchName
+                    try {
+                        branchName = env.GIT_BRANCH
+                        if (branchName == null || branchName.isEmpty()) {
+                            // Fallback to the Git command
+                            branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                        } else {
+                            branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                        }
+                    } catch (Exception e) {
+                        error("Failed to retrieve the branch name.")
+                    }
                     echo "Current branch: ${branchName}"
                 }
             }
@@ -31,8 +41,18 @@ pipeline {
         stage('Conditional Approval') {
             when {
                 expression {
-                    def branchName = env.GIT_BRANCH ?: env.BRANCH_NAME
-                    branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                    def branchName
+                    try {
+                        branchName = env.GIT_BRANCH
+                        if (branchName == null || branchName.isEmpty()) {
+                            // Fallback to the Git command
+                            branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                        } else {
+                            branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                        }
+                    } catch (Exception e) {
+                        error("Failed to retrieve the branch name.")
+                    }
                     return branchName == 'main'
                 }
             }
@@ -47,3 +67,4 @@ pipeline {
         }
     }
 }
+
