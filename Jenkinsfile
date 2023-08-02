@@ -20,16 +20,8 @@ pipeline {
             }
         }
     stage('tfsec') {
-      agent {
-        docker { 
-          image 'tfsec/tfsec-ci:v0.57.1' 
-          reuseNode true
-        }
-      }
       steps {
-        sh '''
-          tfsec . --no-color
-        '''
+        sh ' /usr/local/bin/dockerrun --rm -it -v "$(pwd):/src" aquasec/tfsec .'
       }
     }
 
