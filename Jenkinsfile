@@ -20,16 +20,13 @@ pipeline {
             }
         }
         stage('Conditional Approval') {
-            steps {
-                script {
-                    // Check if the current branch is 'main'
-                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    if (branchName == 'main') {
-                        input(message: 'Approval required', ok: 'Proceed', submitterParameter: 'APPROVER')
-                    } else {
-                        echo "Skipping approval for branch ${branchName}"
-                    }
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'main'
                 }
+            }
+            steps {
+                input(message: 'Approval required', ok: 'Proceed', submitterParameter: 'APPROVER')
             }
         }
     }
