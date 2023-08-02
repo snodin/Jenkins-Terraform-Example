@@ -6,7 +6,11 @@ pipeline {
     stages {
         stage('Print Branch Name') {
             steps {
-                echo "Current branch: ${env.BRANCH_NAME}"
+                script {
+                    def branchName = env.GIT_BRANCH ?: env.BRANCH_NAME
+                    branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                    echo "Current branch: ${branchName}"
+                }
             }
         }
         stage('clean workspace') {
@@ -27,7 +31,9 @@ pipeline {
         stage('Conditional Approval') {
             when {
                 expression {
-                    return env.BRANCH_NAME == 'main'
+                    def branchName = env.GIT_BRANCH ?: env.BRANCH_NAME
+                    branchName = branchName.replaceFirst('^.*/(.*$)', '$1')
+                    return branchName == 'main'
                 }
             }
             steps {
