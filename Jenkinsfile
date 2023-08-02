@@ -4,6 +4,11 @@ pipeline {
         skipDefaultCheckout(true)
     }
     stages {
+        stage('Print Branch Name') {
+            steps {
+                echo "Current branch: ${env.BRANCH_NAME}"
+            }
+        }
         stage('clean workspace') {
             steps {
                 cleanWs()
