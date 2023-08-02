@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'linux'}
+  agent { label 'any'}
   options {
     skipDefaultCheckout(true)
   }
@@ -16,7 +16,7 @@ pipeline {
     }
     stage('terraform') {
       steps {
-        sh './terraformw apply -auto-approve -no-color'
+        sh '/opt/homebrew/bin/terraform apply -auto-approve -no-color'
       }
     }
   }
