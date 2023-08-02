@@ -4,16 +4,14 @@ pipeline {
         skipDefaultCheckout(true)
     }
     stages {
-        stage('SCM') {
+        stage('clean workspace') {
             steps {
-                checkout scm
+                cleanWs()
             }
         }
-        stage('SonarQube Analysis') {
+        stage('checkout') {
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube') {
-                    sh "/bin/sonar-scanner"
-                }
+                checkout scm
             }
         }
         stage('Approval for Terraform') {
@@ -21,11 +19,15 @@ pipeline {
                 input(message: 'Approval required before Terraform', ok: 'Proceed', submitterParameter: 'APPROVER')
             }
         }
+    stage('tfsec') {
+      steps {
+        sh ' /usr/local/bin/docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
+      }
+    }
+
         stage('terraform') {
             steps {
-                sh '/usr/local/bin/docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
-                // Replace the above 'docker run' command with your actual Terraform command
-                // e.g., sh '/usr/local/bin/docker run --rm -v "$(pwd):/src" your-terraform-image your-terraform-command'
+                sh '/opt/homebrew/bin/terraform apply -auto-approve -no-color'
             }
         }
     }
