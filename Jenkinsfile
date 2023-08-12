@@ -23,7 +23,7 @@ pipeline {
 
         stage('terraform') {
             steps {
-                sh '/opt/homebrew/bin/terraform apply -auto-approve -no-color'
+                bat 'terraform apply -auto-approve -no-color'
             }
         }
     }
