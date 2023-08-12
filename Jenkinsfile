@@ -14,11 +14,7 @@ pipeline {
                 checkout scm
             }
         }
-   # stage('tfsec') {
-   #  steps {
-   #     sh ' /usr/local/bin/docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
-   #   }
-   # }
+   
     stage('Approval for Terraform') {
             steps {
                 input(message: 'Approval required before Terraform', ok: 'Proceed', submitterParameter: 'APPROVER')
