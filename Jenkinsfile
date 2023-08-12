@@ -23,7 +23,7 @@ pipeline {
 
         stage('terraform') {
             steps {
-                bat 'c:\Terraform\terraform apply -auto-approve -no-color'
+                cmd 'c:\Terraform\terraform apply -auto-approve -no-color'
             }
         }
     }
