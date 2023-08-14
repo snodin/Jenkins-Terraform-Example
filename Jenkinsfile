@@ -14,11 +14,29 @@ pipeline {
                 checkout scm
             }
         }
- stage('tfsec') {
-      steps {
-        sh ' /usr/local/bin/docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
-      }
+
+
+    stages {
+        stage('tfsec') {
+            steps {
+                script {
+                    // Utilizamos la ruta completa a Docker en Windows
+                    def dockerCmd = 'C:\\Program Files\\Docker\\docker.exe'
+
+                    // Ruta del directorio actual en Windows
+                    def currentDir = pwd()
+
+                    // Comando para ejecutar el contenedor Docker
+                    def dockerRunCmd = "\"${dockerCmd}\" run --rm -v \"${currentDir}:/src\" aquasec/tfsec"
+
+                    // Ejecutar el comando en un proceso de shell de Windows
+                    bat(script: dockerRunCmd, returnStatus: true)
+                }
+            }
+        }
     }
+
+        
         
     stage('Approval for Terraform') {
             steps {
