@@ -17,7 +17,7 @@ pipeline {
    
 stage('tfsec') {
       steps {
-        PowerShell ' docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
+        PowerShell.exe ' docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
       }
     }
         
