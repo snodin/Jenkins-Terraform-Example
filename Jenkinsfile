@@ -15,6 +15,11 @@ pipeline {
             }
         }
    
+stage('tfsec') {
+      steps {
+        sh ' docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
+      }
+    }
         
     stage('Approval for Terraform') {
             steps {
