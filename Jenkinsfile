@@ -16,7 +16,7 @@ pipeline {
         }
 
 
-    stages {
+   
         stage('tfsec') {
             steps {
                 script {
@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         }
-    }
+
 
         
         
