@@ -24,7 +24,7 @@ pipeline {
                     def dockerCmd = 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
 
                     // Ruta del directorio actual en Windows
-                    def currentDir = 'D:\OneDrive\Documentos\GitHub\sonar-training-examples'
+                    def currentDir = pwd()
 
                     // Comando para ejecutar el contenedor Docker
                     def dockerRunCmd = "\"${dockerCmd}\" run --rm -v \"${currentDir}:/src\" aquasec/tfsec"
