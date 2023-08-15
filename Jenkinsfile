@@ -16,8 +16,8 @@ pipeline {
         }
     stage('tfsec') {
     steps {
-       bat 'winpty docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
-     }
+       bat 'docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
+          }
     }
         
     stage('Approval for Terraform') {
