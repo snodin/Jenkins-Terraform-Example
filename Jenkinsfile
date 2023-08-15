@@ -16,7 +16,7 @@ pipeline {
         }
     stage('tfsec') {
     steps {
-       bat ' winpty docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
+       C:\Program Files\Git\bin\sh.exe 'docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src'
           }
     }
         
